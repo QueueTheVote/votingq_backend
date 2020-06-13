@@ -4,23 +4,25 @@
 
 CREATE TABLE elections
 (
-    id            bigint       NOT NULL PRIMARY KEY,
-    name          varchar(50)  NOT NULL,
-    day           date         NOT NULL,
+    id              bigint       NOT NULL PRIMARY KEY,
+    name            varchar(50)  NOT NULL,
+    day             date         NOT NULL,
     ocd_division_id varchar(200) NOT NULL,
-    expired          boolean     NOT NULL DEFAULT (false)
+    expired         boolean      NOT NULL DEFAULT (false)
 );
 
 CREATE TABLE centers
 (
-    id       serial       NOT NULL PRIMARY KEY,
-    street1  varchar(100) NOT NULL,
-    street2  varchar(100) NULL,
-    city     varchar(50)  NOT NULL,
-    state    varchar(2)   NOT NULL,
-    zip      varchar(5)   NOT NULL,
-    current_election_id bigint NULL,
-    FOREIGN KEY (current_election_id) REFERENCES elections(id)
+    id                    serial       NOT NULL PRIMARY KEY,
+    name                  varchar(150) NOT NULL,
+    street1               varchar(100) NOT NULL,
+    street2               varchar(100) NULL,
+    city                  varchar(50)  NOT NULL,
+    state                 varchar(2)   NOT NULL,
+    zip                   varchar(5)   NOT NULL,
+    current_election_id   bigint       NULL,
+    current_polling_hours varchar(75)  NULL,
+    FOREIGN KEY (current_election_id) REFERENCES elections (id)
 );
 
 CREATE TABLE queues
@@ -62,7 +64,6 @@ CREATE TABLE group_voters
     FOREIGN KEY (queue_group_id) REFERENCES queue_groups (id),
     FOREIGN KEY (voter_id) REFERENCES voters (id)
 )
-
     # --- !Downs
 
 DROP TABLE centers;
