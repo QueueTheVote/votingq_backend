@@ -9,7 +9,11 @@ class CentersService {
 
   import CentersService._
 
-  // Returns Dummy response
+  /**
+   * Gets centers with polling hours from election id and address
+   *
+   * @return Dummy response
+   */
   def getCenters(request: CentersRequest): Vector[ElectionVotingCenter] = electionVotingCenters
 }
 

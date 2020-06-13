@@ -1,9 +1,10 @@
 package client.controllers
 
-import client.models.{CentersRequest, ElectionCentersResponse, VotingCenterWithHours}
+import client.models.{CentersRequest, VotingCenterWithHours}
 import javax.inject._
 import play.api.mvc._
 import service.CentersService
+import client.models.WriteableImplicits._
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -37,7 +38,6 @@ class VotingCenterController @Inject()(
     val request = CentersRequest(electionId, street1, street2, city, state, zip)
     val centers = centerService.getCenters(request)
     val response = centers.map(VotingCenterWithHours.fromElectionVotingCenter)
-    import client.models.WriteableImplicits._
     Ok(response.toList)
   }
 }
