@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/votingq_backend
+web: target/universal/stage/bin/votingq_backend -Dplay.evolutions.db.voting_q.autoApply=true
