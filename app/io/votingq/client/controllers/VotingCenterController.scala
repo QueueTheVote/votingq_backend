@@ -50,7 +50,6 @@ class VotingCenterController @Inject()(
     val request = CentersRequest(electionId, street1, street2, city, state, zip)
     val centers = centerService.getCenters(request)
     val response = centers.flatMap(MinimalActiveVotingCenter.fromElectionVotingCenter)
-    dataSource.run()
     Ok(response.toList)
   }
 
