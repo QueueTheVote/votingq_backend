@@ -63,7 +63,7 @@ class VotingCenterController @Inject()(
       BadRequest("Set of voterIds must contain current user's voterId.")
     } else {
       queueService.joinQueue(queueId, voterIds)
-        .fold(failure => BadRequest(failure.msg),
+        .fold(failure => UnprocessableEntity(failure.msg),
           queueSuccess => Ok(CurrentUserVotingQueue.fromVoterId(queueSuccess, userVoterId)))
     }
   }

@@ -13,7 +13,7 @@ CREATE TABLE elections
 
 CREATE TABLE centers
 (
-    id                    serial       NOT NULL PRIMARY KEY,
+    id                    bigserial    NOT NULL PRIMARY KEY,
     name                  varchar(150) NOT NULL,
     street1               varchar(100) NOT NULL,
     street2               varchar(100) NULL,
@@ -27,7 +27,7 @@ CREATE TABLE centers
 
 CREATE TABLE queues
 (
-    id          serial    NOT NULL PRIMARY KEY,
+    id          bigserial NOT NULL PRIMARY KEY,
     election_id bigint    NOT NULL,
     center_id   bigint    NOT NULL,
     start       timestamp NOT NULL,
@@ -38,7 +38,8 @@ CREATE TABLE queues
 
 CREATE TABLE voters
 (
-    id       serial       NOT NULL PRIMARY KEY,
+    id       bigserial    NOT NULL PRIMARY KEY,
+    name     varchar(100) NOT NULL,
     email    varchar(254) NOT NULL,
     verified boolean      NOT NULL DEFAULT (true)
 );
@@ -50,6 +51,7 @@ CREATE TABLE queue_groups
     queue_id      bigint    NOT NULL,
     center_id     bigint    NOT NULL,
     position      int       NULL,
+    capacity      int NOT NULL DEFAULT(1),
     queue_entered timestamp NULL,
     queue_left    timestamp NULL,
     FOREIGN KEY (election_id) REFERENCES elections (id),
