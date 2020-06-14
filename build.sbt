@@ -7,11 +7,14 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.13.2"
 
+scalacOptions += "-Ypartial-unification"
+
 libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
 libraryDependencies ++= Seq(evolutions, jdbc)
 libraryDependencies += "org.postgresql" % "postgresql" % "42.2.14"
 libraryDependencies += "org.apache.logging.log4j" % "log4j-core" % "2.13.3"
+libraryDependencies += "org.typelevel" %% "cats-core" % "2.0.0"
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "io.votingq.controllers._"
 
