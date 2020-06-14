@@ -8,6 +8,7 @@ GET        /                    io.votingq.client.controllers.VotingCenterContro
 GET        /centers             io.votingq.client.controllers.VotingCenterController.getCenters(electionId: Long, street1: String,street2: Option[String],city: String,state: String,zip: Option[String])
 GET        /center              io.votingq.client.controllers.VotingCenterController.getCenter(centerId: Long, voterId: Option[Long])
 POST       /center/queue/:queueId/join io.votingq.client.controllers.VotingCenterController.joinQueue(queueId: Long, voterIds: Set[Long], userVoterId: Long)
+GET        /database            io.votingq.client.controllers.VotingCenterController.database()
 
 # Map static resources from the /public folder to the /assets URL path
 GET        /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)

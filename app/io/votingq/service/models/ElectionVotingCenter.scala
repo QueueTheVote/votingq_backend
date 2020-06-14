@@ -5,8 +5,8 @@ import java.time.ZonedDateTime
 import play.api.libs.json.{Json, Writes}
 
 case class PollingHours(
-  start: ZonedDateTime,
-  finish: ZonedDateTime
+  start: String,
+  finish: String
 )
 
 object PollingHours {

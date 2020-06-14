@@ -68,5 +68,10 @@ class VotingCenterController @Inject()(
           queueSuccess => Ok(CurrentUserVotingQueue.fromVoterId(queueSuccess, userVoterId)))
     }
   }
+
+  def database(): Action[AnyContent] = Action {
+    dataSource.run()
+    Ok("Hello!")
+  }
 }
 
