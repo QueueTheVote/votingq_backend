@@ -77,7 +77,7 @@ object DummyDatabase {
 
   val hours: PollingHours = PollingHours(
     start = "Sat. Jun. 14 8:00 a.m.",
-    finish = "7:00 p.m. ET"
+    finish = "7:00 p.m. MT"
   )
 
   object electionVotingCenters {
@@ -110,7 +110,7 @@ object DummyDatabase {
       ),
       availableQueues = Vector(votingQueues.queue2),
       currentQueue = Some(votingQueues.queue2),
-      pollingHours = Vector(hours.copy(finish = "5:00 p.m. ET"))
+      pollingHours = Vector(hours.copy(finish = "5:00 p.m. MT"))
     )
     val v3: ElectionVotingCenter = ElectionVotingCenter(
       id = 3,
