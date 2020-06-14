@@ -24,11 +24,11 @@ class CentersService {
  */
 object CentersService {
 
-  private val zoneId = ZoneId.of("America/New_York")
+  private val zoneId = ZoneId.of("-07:00")
 
   val election: Election = Election(
-    id = 2000,
-    name = "VIP Test Election",
+    id = 4977,
+    name = "Colorado State Primary Election",
     day = LocalDate.of(2020, 6, 14)
   )
   val start: ZonedDateTime = election.day.atTime(8, 0).atZone(zoneId)
@@ -68,29 +68,29 @@ object CentersService {
 
     val v1: ElectionVotingCenter = ElectionVotingCenter(
       id = 1,
-      name = "My Unavailable Voting Center",
+      name = "Chapel Hills Mall",
       election = Some(election),
       address = Address(
-        street1 = "123 Baker St",
+        street1 = "1910 Briargate Boulevard",
         street2 = None,
-        city = "New York",
-        state = "NY",
-        zip = "11014"
+        city = "Colorado Springs",
+        state = "CO",
+        zip = "80920"
       ),
-      availableQueues = Vector.empty,
-      currentQueue = None,
-      pollingHours = Vector.empty
+      availableQueues = Vector(votingQueues.queue),
+      currentQueue = Some(votingQueues.queue),
+      pollingHours = Vector(hours)
     )
     val v2: ElectionVotingCenter = ElectionVotingCenter(
       id = 2,
-      name = "My Single-Day Available Voting Center",
+      name = "Vista Grande Baptist Church",
       election = Some(election),
       address = Address(
-        street1 = "754 Shaw Ave",
+        street1 = "5680 Stetson Hills Boulevard",
         street2 = None,
-        city = "New York",
-        state = "NY",
-        zip = "11014"
+        city = "Colorado Springs",
+        state = "CO",
+        zip = "80917"
       ),
       availableQueues = Vector(votingQueues.queue),
       currentQueue = Some(votingQueues.queue),
@@ -98,23 +98,18 @@ object CentersService {
     )
     val v3: ElectionVotingCenter = ElectionVotingCenter(
       id = 3,
-      name = "My Multi-Day Available Voting Center",
+      name = "EPC Clerk's Office North Branch",
       election = Some(election),
       address = Address(
-        street1 = "754 Puppy Rd",
+        street1 = "8830 North Union Boulevard",
         street2 = Some("Ste 505"),
-        city = "New York",
-        state = "NY",
-        zip = "11014"
+        city = "Colorado Springs",
+        state = "CO",
+        zip = "80920"
       ),
-      availableQueues = votingQueues.asVector,
-      currentQueue = Some(votingQueues.queue3DaysEarly),
-      pollingHours = Vector(
-        hours.copy(start = hours.start.minusDays(3)),
-        hours.copy(start = hours.start.minusDays(2)),
-        hours.copy(start = hours.start.minusDays(1)),
-        hours
-      )
+      availableQueues = Vector(votingQueues.queue),
+      currentQueue = Some(votingQueues.queue),
+      pollingHours = Vector(hours)
     )
     val asVector: Vector[ElectionVotingCenter] = Vector(v1, v2, v3)
     val asMap: Map[Long, ElectionVotingCenter] = Map(v1.id -> v1, v2.id -> v2, v3.id -> v3)

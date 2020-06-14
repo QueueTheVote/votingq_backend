@@ -4,7 +4,7 @@ import cats.data.NonEmptyList
 import play.api.libs.json.{Json, Writes}
 import service.models.{Address, ElectionVotingCenter, PollingHours, VotingQueue}
 
-trait BareVotingCenter {
+trait ClientVotingCenter {
 
   def id: Long
 
@@ -18,8 +18,8 @@ case class MinimalActiveVotingCenter(
   override val name: String,
   override val address: Address,
   pollingHours: PollingHours,
-  currentQueue: VotingQueue
-) extends BareVotingCenter
+  currentQueue: MinimalVotingQueue
+) extends ClientVotingCenter
 
 object MinimalActiveVotingCenter {
 
@@ -32,7 +32,7 @@ object MinimalActiveVotingCenter {
         name = center.name,
         address = center.address,
         pollingHours = hours.head,
-        currentQueue = queue
+        currentQueue = MinimalVotingQueue(queue)
       ))
       case _ => None
     }
@@ -45,4 +45,24 @@ case class DetailedActiveVotingCenter(
   override val id: Long,
   override val name: String,
   override val address: Address,
-) extends BareVotingCenter
+  currentQueue: ClientVotingQueue,
+  voterRequirements: Vector[String] = Vector(
+    "Driver's License, State ID number, or Social Security Number",
+    "Something Else"
+  )
+) extends ClientVotingCenter
+
+object DetailedActiveVotingCenter {
+  def fromElectionVotingCenter(center: ElectionVotingCenter, voterId: Long): Option[DetailedActiveVotingCenter] = {
+    center.currentQueue.map{currentQueue =>
+      val queue = CurrentUserVotingQueue.fromVoterId(currentQueue, voterId).getOrElse(MinimalVotingQueue(currentQueue))
+      DetailedActiveVotingCenter(
+        id = center.id,
+        name = center.name,
+        address = center.address,
+        currentQueue = queue
+      )
+    }
+  }
+  implicit val writes: Writes[DetailedActiveVotingCenter] = Json.writes[DetailedActiveVotingCenter]
+}

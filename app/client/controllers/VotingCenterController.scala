@@ -1,6 +1,6 @@
 package client.controllers
 
-import client.models.{CentersRequest, MinimalActiveVotingCenter}
+import client.models.{CentersRequest, DetailedActiveVotingCenter, MinimalActiveVotingCenter}
 import javax.inject._
 import play.api.mvc._
 import service.CentersService
@@ -26,11 +26,15 @@ class VotingCenterController @Inject()(
   def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.index())
   }
-/*
-  def getCenter(centerId: Long): Action[AnyContent] = Action {
-    centerService.getCenter(centerId)
+
+  def getCenter(centerId: Long, voterId: Long): Action[AnyContent] = Action {
+    val maybeResponse = centerService.getCenter(centerId)
+      .flatMap{center =>
+        DetailedActiveVotingCenter.fromElectionVotingCenter(center, voterId)
+      }
+    maybeResponse.map(r => Ok(r)).getOrElse(NotFound)
   }
-*/
+
   def getCenters(
     electionId: Long,
     street1: String,
