@@ -1,9 +1,9 @@
-package client.models
+package io.votingq.client.models
 
 import java.time.ZonedDateTime
 
 import play.api.libs.json.{Json, Writes}
-import service.models.{Voter, VotingQueue}
+import io.votingq.service.models.{Voter, VotingQueue}
 
 sealed trait ClientVotingQueue {
 
@@ -45,18 +45,17 @@ case class CurrentUserVotingQueue(
   override val finish: ZonedDateTime,
   override val capacity: Int,
   override val size: Int,
-  position: Int,
-  voters: Vector[Voter]
+  position: Int
 ) extends ClientVotingQueue
 
 object CurrentUserVotingQueue {
 
   def fromVoterId(
     queue: VotingQueue,
-    voterGroupId: Long
+    voterId: Long
   ): Option[CurrentUserVotingQueue] = {
     queue.voterGroups
-      .find(groups => groups.voters.exists(_.id == voterGroupId))
+      .find(groups => groups.voters.exists(_.id == voterId))
       .map { group =>
         CurrentUserVotingQueue(
           id = queue.id,
@@ -64,8 +63,7 @@ object CurrentUserVotingQueue {
           finish = queue.finish,
           capacity = queue.capacity,
           size = queue.voterGroups.size,
-          position = group.position,
-          voters = group.voters
+          position = group.position
         )
       }
   }

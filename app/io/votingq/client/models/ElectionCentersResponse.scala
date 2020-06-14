@@ -1,6 +1,6 @@
-package client.models
+package io.votingq.client.models
 
-import service.models.{Election, ElectionVotingCenter}
+import io.votingq.service.models.{Election, ElectionVotingCenter}
 
 case class ElectionCentersResponse(
   election: Election,

@@ -1,4 +1,4 @@
-package client.models
+package io.votingq.client.models
 
 case class CentersRequest(
   electionId: Long,

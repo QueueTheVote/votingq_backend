@@ -3,7 +3,12 @@ organization := "io.votingq"
 
 version := "1.0-SNAPSHOT"
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
+lazy val root = (project in file("."))
+  .enablePlugins(PlayScala)
+  .settings(
+    routesImport ++= Seq(
+      "io.votingq.client.Bindables._"
+    ))
 
 scalaVersion := "2.13.2"
 

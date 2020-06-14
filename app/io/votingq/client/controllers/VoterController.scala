@@ -1,4 +1,4 @@
-package client.controllers
+package io.votingq.client.controllers
 
 import javax.inject._
 import play.api.mvc._

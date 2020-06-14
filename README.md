@@ -169,3 +169,40 @@ Sample Response, with position:
     ]
 }
 ```
+
+### `POST /center/queue/:queueId/join`
+
+If successful, adds a group of voters to a center's active queue and returns .
+
+Note: currently all existing queues have max capacity of 1.
+
+#### Query Parameters
+
+- `voterIds`: `number`*
+    - can be repeated for multiple voters in a group
+    - functions as `Array` query parameter
+- `userVoterId`: `number`*
+    - MUST be part of `voterIds` `Array`
+
+#### Successful Response example
+
+```json
+{
+    "id": 1,
+    "start": "2020-06-14T08:00:00-07:00",
+    "finish": "2020-06-14T19:00:00-07:00",
+    "capacity": 1,
+    "size": 1,
+    "position": 1
+}
+```
+
+#### Unsuccessful requests
+
+- One or more voters of given voterId(s) does not exist
+- Queue with given queue ID does not exist
+- `voterIds` is empty
+- Queue has already reached capacity
+- Queue will have exceeded capacity with given `voterIds` group 
+- Queue already contains one or more voters in given `voterIds` group
+

@@ -1,4 +1,4 @@
-package client.models
+package io.votingq.client
 
 import play.api.http.{ContentTypeOf, ContentTypes, Writeable}
 import play.api.libs.json.Writes

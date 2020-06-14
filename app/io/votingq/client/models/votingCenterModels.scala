@@ -1,8 +1,8 @@
-package client.models
+package io.votingq.client.models
 
 import cats.data.NonEmptyList
 import play.api.libs.json.{Json, Writes}
-import service.models.{Address, ElectionVotingCenter, PollingHours}
+import io.votingq.service.models.{Address, ElectionVotingCenter, PollingHours}
 
 trait ClientVotingCenter {
 

@@ -1,4 +1,4 @@
-package service.models
+package io.votingq.service.models
 
 import java.time.LocalDate
 

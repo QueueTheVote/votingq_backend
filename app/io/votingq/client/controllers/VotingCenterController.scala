@@ -1,10 +1,9 @@
-package client.controllers
-
-import client.models.{CentersRequest, DetailedActiveVotingCenter, MinimalActiveVotingCenter}
+package io.votingq.client.controllers
+import io.votingq.client.WriteableImplicits._
+import io.votingq.client.models.{CentersRequest, CurrentUserVotingQueue, DetailedActiveVotingCenter, MinimalActiveVotingCenter}
+import io.votingq.service.{CentersService, QueueService}
 import javax.inject._
 import play.api.mvc._
-import service.CentersService
-import client.models.WriteableImplicits._
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -13,7 +12,8 @@ import client.models.WriteableImplicits._
 @Singleton
 class VotingCenterController @Inject()(
   val controllerComponents: ControllerComponents,
-  val centerService: CentersService
+  val centerService: CentersService,
+  val queueService: QueueService
 ) extends BaseController {
 
   /**
@@ -54,9 +54,18 @@ class VotingCenterController @Inject()(
 
   def joinQueue(
     queueId: Long,
-    voterIds: Set[Long]
+    voterIds: Set[Long],
+    userVoterId: Long
   ): Action[AnyContent] = Action {
-    Ok("No queue")
+    if (voterIds.isEmpty) {
+      BadRequest("Non-empty voter ID set required.")
+    } else if (!voterIds.contains(userVoterId)){
+      BadRequest("Set of voterIds must contain current user's voterId.")
+    } else {
+      queueService.joinQueue(queueId, voterIds)
+        .fold(failure => BadRequest(failure.msg),
+          queueSuccess => Ok(CurrentUserVotingQueue.fromVoterId(queueSuccess, userVoterId)))
+    }
   }
 }
 
