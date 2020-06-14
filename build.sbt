@@ -19,6 +19,7 @@ libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0
 libraryDependencies ++= Seq(evolutions, jdbc)
 libraryDependencies += "org.postgresql" % "postgresql" % "42.2.14"
 libraryDependencies += "org.apache.logging.log4j" % "log4j-core" % "2.13.3"
+libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
 libraryDependencies += "org.typelevel" %% "cats-core" % "2.0.0"
 libraryDependencies ++= Seq(
   "org.tpolecat" %% "doobie-core"     % doobieVersion,

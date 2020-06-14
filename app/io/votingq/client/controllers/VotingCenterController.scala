@@ -1,7 +1,7 @@
 package io.votingq.client.controllers
 import io.votingq.client.WriteableImplicits._
 import io.votingq.client.models.{CentersRequest, CurrentUserVotingQueue, DetailedActiveVotingCenter, MinimalActiveVotingCenter}
-import io.votingq.service.{CentersService, QueueService}
+import io.votingq.service.{CentersService, QueueService, VotingQDataSource}
 import javax.inject._
 import play.api.mvc._
 
@@ -13,7 +13,8 @@ import play.api.mvc._
 class VotingCenterController @Inject()(
   val controllerComponents: ControllerComponents,
   val centerService: CentersService,
-  val queueService: QueueService
+  val queueService: QueueService,
+  val dataSource: VotingQDataSource
 ) extends BaseController {
 
   /**
@@ -49,6 +50,7 @@ class VotingCenterController @Inject()(
     val request = CentersRequest(electionId, street1, street2, city, state, zip)
     val centers = centerService.getCenters(request)
     val response = centers.flatMap(MinimalActiveVotingCenter.fromElectionVotingCenter)
+    dataSource.run()
     Ok(response.toList)
   }
 

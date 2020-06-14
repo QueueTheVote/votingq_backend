@@ -5,7 +5,7 @@ import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
 import play.api.test._
 import play.api.test.Helpers._
-import io.votingq.service.{CentersService, QueueService}
+import io.votingq.service.{CentersService, QueueService, VotingQDataSource}
 
 /**
  * Add your spec here.
@@ -18,7 +18,7 @@ class VotingCenterControllerSpec extends PlaySpec with GuiceOneAppPerTest with I
   "HomeController GET" should {
 
     "render the index page from a new instance of controller" in {
-      val controller = new VotingCenterController(stubControllerComponents(), new CentersService, new QueueService)
+      val controller = new VotingCenterController(stubControllerComponents(), new CentersService, new QueueService, new VotingQDataSource)
       val home = controller.index().apply(FakeRequest(GET, "/"))
 
       status(home) mustBe OK
