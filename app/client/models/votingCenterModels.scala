@@ -54,17 +54,16 @@ case class DetailedActiveVotingCenter(
 
 object DetailedActiveVotingCenter {
   def fromElectionVotingCenter(center: ElectionVotingCenter, maybeVoterId: Option[Long]): Option[DetailedActiveVotingCenter] = {
-    center.currentQueue.flatMap { currentQueue =>
-      maybeVoterId.map { voterId =>
-        val queue = CurrentUserVotingQueue.fromVoterId(currentQueue, voterId)
-          .getOrElse(MinimalVotingQueue(currentQueue))
+    center.currentQueue.map { currentQueue =>
+      val queue: ClientVotingQueue = maybeVoterId.flatMap { voterId =>
+        CurrentUserVotingQueue.fromVoterId(currentQueue, voterId)
+      } .getOrElse(MinimalVotingQueue(currentQueue))
         DetailedActiveVotingCenter(
           id = center.id,
           name = center.name,
           address = center.address,
           currentQueue = queue
         )
-      }
     }
   }
   implicit val writes: Writes[DetailedActiveVotingCenter] = Json.writes[DetailedActiveVotingCenter]

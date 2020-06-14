@@ -110,3 +110,62 @@ position in queue, if already in the queue.
 Todo: 
 - Get `voterId` from session, not as a query parameter.
 - Make `centerId` a path parameter, not a query parameter.
+- don't require active queue. Have separate endpoint for that.
+
+#### Response
+
+If a center with `centerId` exists, returns a detailed center information. If `voterId` is provided,
+additionally returns `position` in center's active queue, if voter is in the queue.
+
+Sample Response, without position:
+
+```json
+{
+    "id": 1,
+    "name": "Chapel Hills Mall",
+    "address": {
+        "street1": "1910 Briargate Boulevard",
+        "city": "Colorado Springs",
+        "state": "CO",
+        "zip": "80920"
+    },
+    "currentQueue": {
+        "id": 1,
+        "start": "2020-06-14T08:00:00-07:00",
+        "finish": "2020-06-14T19:00:00-07:00",
+        "capacity": 1,
+        "size": 0
+    },
+    "voterRequirements": [
+        "Driver's License, State ID number, or Social Security Number",
+        "Something Else"
+    ]
+}
+```
+
+Sample Response, with position:
+
+```json
+{
+    "id": 1,
+    "name": "Chapel Hills Mall",
+    "address": {
+        "street1": "1910 Briargate Boulevard",
+        "city": "Colorado Springs",
+        "state": "CO",
+        "zip": "80920"
+    },
+    "currentQueue": {
+        "id": 1,
+        "start": "2020-06-14T08:00:00-07:00",
+        "finish": "2020-06-14T19:00:00-07:00",
+        "capacity": 1,
+        "size": 1,
+        "position": 1
+    },
+    "voterRequirements": [
+        "Driver's License, State ID number, or Social Security Number",
+        "Something Else"
+    ]
+}
+```

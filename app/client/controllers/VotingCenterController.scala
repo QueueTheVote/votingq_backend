@@ -29,13 +29,13 @@ class VotingCenterController @Inject()(
 
   def getCenter(
     centerId: Long,
-    voterId: Option[Long]
+    voterId: Option[Long] = None
   ): Action[AnyContent] = Action {
     val maybeResponse = centerService.getCenter(centerId)
       .flatMap{center =>
         DetailedActiveVotingCenter.fromElectionVotingCenter(center, voterId)
       }
-    maybeResponse.map(r => Ok(r)).getOrElse(NoContent)
+    maybeResponse.map(r => Ok(r)).getOrElse(NotFound)
   }
 
   def getCenters(
