@@ -27,12 +27,15 @@ class VotingCenterController @Inject()(
     Ok(views.html.index())
   }
 
-  def getCenter(centerId: Long, voterId: Long): Action[AnyContent] = Action {
+  def getCenter(
+    centerId: Long,
+    voterId: Option[Long]
+  ): Action[AnyContent] = Action {
     val maybeResponse = centerService.getCenter(centerId)
       .flatMap{center =>
         DetailedActiveVotingCenter.fromElectionVotingCenter(center, voterId)
       }
-    maybeResponse.map(r => Ok(r)).getOrElse(NotFound)
+    maybeResponse.map(r => Ok(r)).getOrElse(NoContent)
   }
 
   def getCenters(
@@ -47,6 +50,13 @@ class VotingCenterController @Inject()(
     val centers = centerService.getCenters(request)
     val response = centers.flatMap(MinimalActiveVotingCenter.fromElectionVotingCenter)
     Ok(response.toList)
+  }
+
+  def joinQueue(
+    queueId: Long,
+    voterIds: Set[Long]
+  ): Action[AnyContent] = Action {
+    Ok("No queue")
   }
 }
 

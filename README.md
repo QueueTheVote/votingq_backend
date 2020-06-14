@@ -18,7 +18,7 @@ address' location radius. Includes current active queue, address, name, id, and 
 - `state`: `string`*,
 - `zip`: `string`
     
-* Required
+(*) Required
 
 Todo: 
 - Have a dynamic response, not a hardcoded one. :)
@@ -103,9 +103,9 @@ position in queue, if already in the queue.
 #### Query Parameters
 
 - `centerId`: `number`*
-- `voterId`: `number`*
+- `voterId`: `number`
 
-* Required.
+(*) Required.
 
 Todo: 
 - Get `voterId` from session, not as a query parameter.

@@ -1,6 +1,6 @@
 package service.models
 
-import java.time.{LocalDate, ZonedDateTime}
+import java.time.ZonedDateTime
 
 import play.api.libs.json.{Json, Writes}
 

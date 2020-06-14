@@ -2,7 +2,7 @@ package client.models
 
 import cats.data.NonEmptyList
 import play.api.libs.json.{Json, Writes}
-import service.models.{Address, ElectionVotingCenter, PollingHours, VotingQueue}
+import service.models.{Address, ElectionVotingCenter, PollingHours}
 
 trait ClientVotingCenter {
 
@@ -53,15 +53,18 @@ case class DetailedActiveVotingCenter(
 ) extends ClientVotingCenter
 
 object DetailedActiveVotingCenter {
-  def fromElectionVotingCenter(center: ElectionVotingCenter, voterId: Long): Option[DetailedActiveVotingCenter] = {
-    center.currentQueue.map{currentQueue =>
-      val queue = CurrentUserVotingQueue.fromVoterId(currentQueue, voterId).getOrElse(MinimalVotingQueue(currentQueue))
-      DetailedActiveVotingCenter(
-        id = center.id,
-        name = center.name,
-        address = center.address,
-        currentQueue = queue
-      )
+  def fromElectionVotingCenter(center: ElectionVotingCenter, maybeVoterId: Option[Long]): Option[DetailedActiveVotingCenter] = {
+    center.currentQueue.flatMap { currentQueue =>
+      maybeVoterId.map { voterId =>
+        val queue = CurrentUserVotingQueue.fromVoterId(currentQueue, voterId)
+          .getOrElse(MinimalVotingQueue(currentQueue))
+        DetailedActiveVotingCenter(
+          id = center.id,
+          name = center.name,
+          address = center.address,
+          currentQueue = queue
+        )
+      }
     }
   }
   implicit val writes: Writes[DetailedActiveVotingCenter] = Json.writes[DetailedActiveVotingCenter]
