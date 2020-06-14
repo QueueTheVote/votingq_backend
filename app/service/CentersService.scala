@@ -14,7 +14,9 @@ class CentersService {
    *
    * @return Dummy response
    */
-  def getCenters(request: CentersRequest): Vector[ElectionVotingCenter] = electionVotingCenters.asVector
+  def getCenters(request: CentersRequest): Vector[ElectionVotingCenter] = {
+    electionVotingCenters.asVector.filter(_.election.exists(_.id == request.electionId))
+  }
 
   def getCenter(centerId: Long): Option[ElectionVotingCenter] = electionVotingCenters.asMap.get(centerId)
 }
