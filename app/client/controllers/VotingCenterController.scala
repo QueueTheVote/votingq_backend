@@ -1,6 +1,6 @@
 package client.controllers
 
-import client.models.{CentersRequest, VotingCenterWithHours}
+import client.models.{CentersRequest, MinimalActiveVotingCenter}
 import javax.inject._
 import play.api.mvc._
 import service.CentersService
@@ -23,10 +23,14 @@ class VotingCenterController @Inject()(
    * will be called when the application receives a `GET` request with
    * a path of `/`.
    */
-  def index() = Action { implicit request: Request[AnyContent] =>
+  def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.index())
   }
-
+/*
+  def getCenter(centerId: Long): Action[AnyContent] = Action {
+    centerService.getCenter(centerId)
+  }
+*/
   def getCenters(
     electionId: Long,
     street1: String,
@@ -37,7 +41,7 @@ class VotingCenterController @Inject()(
   ): Action[AnyContent] = Action {
     val request = CentersRequest(electionId, street1, street2, city, state, zip)
     val centers = centerService.getCenters(request)
-    val response = centers.map(VotingCenterWithHours.fromElectionVotingCenter)
+    val response = centers.flatMap(MinimalActiveVotingCenter.fromElectionVotingCenter)
     Ok(response.toList)
   }
 }

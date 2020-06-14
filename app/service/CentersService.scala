@@ -10,13 +10,18 @@ class CentersService {
   import CentersService._
 
   /**
-   * Gets centers with polling hours from election id and address
+   * Gets centers from election id and address
    *
    * @return Dummy response
    */
-  def getCenters(request: CentersRequest): Vector[ElectionVotingCenter] = electionVotingCenters
+  def getCenters(request: CentersRequest): Vector[ElectionVotingCenter] = electionVotingCenters.asVector
+
+  def getCenter(centerId: Long): Option[ElectionVotingCenter] = electionVotingCenters.asMap.get(centerId)
 }
 
+/**
+ * Currently functioning as dummy database
+ */
 object CentersService {
 
   private val zoneId = ZoneId.of("America/New_York")
@@ -37,7 +42,6 @@ object CentersService {
       id = 1,
       start = start,
       finish = finish,
-      capacity = 1,
       voterGroups = Vector.empty
     )
     val queue3DaysEarly: VotingQueue = {
@@ -59,8 +63,10 @@ object CentersService {
     start = start,
     finish = finish
   )
-  val electionVotingCenters: Vector[ElectionVotingCenter] = Vector(
-    ElectionVotingCenter(
+
+  object electionVotingCenters {
+
+    val v1: ElectionVotingCenter = ElectionVotingCenter(
       id = 1,
       name = "My Unavailable Voting Center",
       election = Some(election),
@@ -74,8 +80,8 @@ object CentersService {
       availableQueues = Vector.empty,
       currentQueue = None,
       pollingHours = Vector.empty
-    ),
-    ElectionVotingCenter(
+    )
+    val v2: ElectionVotingCenter = ElectionVotingCenter(
       id = 2,
       name = "My Single-Day Available Voting Center",
       election = Some(election),
@@ -89,8 +95,8 @@ object CentersService {
       availableQueues = Vector(votingQueues.queue),
       currentQueue = Some(votingQueues.queue),
       pollingHours = Vector(hours)
-    ),
-    ElectionVotingCenter(
+    )
+    val v3: ElectionVotingCenter = ElectionVotingCenter(
       id = 3,
       name = "My Multi-Day Available Voting Center",
       election = Some(election),
@@ -109,6 +115,9 @@ object CentersService {
         hours.copy(start = hours.start.minusDays(1)),
         hours
       )
-    ),
-  )
+    )
+    val asVector: Vector[ElectionVotingCenter] = Vector(v1, v2, v3)
+    val asMap: Map[Long, ElectionVotingCenter] = Map(v1.id -> v1, v2.id -> v2, v3.id -> v3)
+  }
+
 }
