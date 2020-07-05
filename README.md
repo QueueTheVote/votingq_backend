@@ -1,5 +1,9 @@
 # VotingQ Backend API
 
+## In Progress (07/2020)
+
+Set up database connecting using Doobie on Heroku (works locally).
+
 ### Endpoints
 
 #### `GET /centers`
