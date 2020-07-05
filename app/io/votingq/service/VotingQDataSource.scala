@@ -47,7 +47,7 @@ class VotingQDataSource extends StrictLogging {
 object VotingQDataSource {
   private object EnvironmentVariables {
     val databaseDriver: String = "org.postgresql.Driver"
-    val databaseUrl: String = Properties.envOrElse("DATABASE_URL", "jdbc:postgresql://localhost:5432/voting_q")
+    val databaseUrl: String = Properties.envOrElse("DATABASE_URL_REAL", "jdbc:postgresql://localhost:5432/voting_q")
     val databaseUsername: String = Properties.envOrElse("DATABASE_USERNAME", "queue_backend_user")
     val databasePassword: String = Properties.envOrElse("DATABASE_PASSWORD", "")
   }
